@@ -1,3 +1,4 @@
-from .config_builder import ConfigBuilder
+from .chimera_conf import ChimeraConf
+from .chimera_form import ChimeraForm
 
-__all__ = ["ConfigBuilder"]
+__all__ = ["ChimeraConf", "ChimeraForm"]
