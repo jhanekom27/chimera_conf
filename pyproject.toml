@@ -1,0 +1,15 @@
+[project]
+name = "chimera-conf"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [{ name = "Jurgen", email = "hanekom.jurgen@bcg.com" }]
+requires-python = ">=3.13"
+dependencies = ["pydantic>=2.11.3", "pyyaml>=6.0.2"]
+
+# [project.scripts]
+# chimera-conf = "chimera_conf:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
