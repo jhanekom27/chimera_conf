@@ -8,7 +8,7 @@
 - **`ChimeraForm`**: A simple class that holds the currently active "form" (e.g., "prod", "dev", "local"). This determines which overlay files are applied.
 - **Layered Loading**: When you `manifest()` a `ChimeraConf` class, it:
   1. Reads the base configuration files defined in `_config_files`.
-  2. Reads overlay files corresponding to the currently active `ChimeraForm`. Overlay files should be placed in a subdirectory named after the form (e.g., `configs/prod/` for the "prod" form).
+  2. Reads overlay files corresponding to the currently active `ChimeraForm`. Overlay files are identified by appending the form name before the extension of the base file (e.g., `configs/base.prod.yaml` for the "prod" form overlay of `configs/base.yaml`).
   3. Merges all loaded configurations, with later files (overlays) overriding earlier ones (base files).
   4. Validates the final configuration against your Pydantic model schema.
 
@@ -56,7 +56,7 @@ _(Note: You'll need to package this properly for pip install to work, or adjust 
       api_key: "base_key_123"
       ```
 
-    - `configs/prod/base.yaml`: (Overlay for the 'prod' form)
+    - `configs/base.prod.yaml`: (Overlay for the 'prod' form)
       ```yaml
       database_url: "postgresql://prod_user:prod_pass@prod_host/prod_db"
       api_key: "prod_secret_key_xyz"
@@ -64,7 +64,7 @@ _(Note: You'll need to package this properly for pip install to work, or adjust 
       feature_flags:
         new_dashboard: true
       ```
-    - `configs/dev/base.yaml`: (Overlay for the 'dev' form)
+    - `configs/base.dev.yaml`: (Overlay for the 'dev' form)
       ```yaml
       database_url: "postgresql://dev_user:dev_pass@dev_host/dev_db"
       api_key: "dev_key_456"
@@ -103,17 +103,17 @@ _(Note: You'll need to package this properly for pip install to work, or adjust 
 
 ## How Overlays Work
 
-When `ChimeraForm` is set to `"prod"`, `chimera_conf` will look for files within a directory structure mirroring your base files, but inside a `prod` subdirectory.
+When `ChimeraForm` is set to `"prod"`, `chimera_conf` looks for overlay files by inserting the form name before the file extension of each base file.
 
 For example, if `_config_files = ["configs/base.yaml", "configs/features.yaml"]` and the form is `"prod"`, it will load:
 
 1.  `configs/base.yaml`
 2.  `configs/features.yaml`
-3.  `configs/prod/base.yaml` (if it exists)
-4.  `configs/prod/features.yaml` (if it exists)
+3.  `configs/base.prod.yaml` (if it exists)
+4.  `configs/features.prod.yaml` (if it exists)
 
 Values in later files overwrite values from earlier files during the merge process.
 
 ## Default Form
 
-If `ChimeraForm.set_form()` is never called, the default form is `"local"`. You can create `configs/local/` overlays for local development overrides that shouldn't be committed.
+If `ChimeraForm.set_form()` is never called, the default form is `"local"`. You can create corresponding `.local.yaml` (or relevant extension) files (e.g., `configs/base.local.yaml`) for local development overrides that shouldn't be committed.
