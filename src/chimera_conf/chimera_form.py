@@ -1,4 +1,7 @@
-from chimera_conf.chimera_conf import logger
+# from chimera_conf.chimera_conf import logger
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class ChimeraForm:

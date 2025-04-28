@@ -4,8 +4,9 @@ from typing import Any
 
 import yaml
 import importlib.resources
+import logging
 
-from chimera_conf.chimera_conf import logger
+logger = logging.getLogger(__name__)
 
 
 def _merge_dicts(base: dict[str, Any], overlay: dict[str, Any]) -> dict[str, Any]:
